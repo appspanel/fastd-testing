@@ -9,11 +9,11 @@
 
 
 use FastD\Http\Response;
-
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 include_once __DIR__ . '/TestCase.php';
 
-class TestCaseTest extends PHPUnit_Framework_TestCase
+class TestCaseTest extends PHPUnitTestCase
 {
     public function testTestCaseFakeData()
     {
@@ -34,10 +34,11 @@ class TestCaseTest extends PHPUnit_Framework_TestCase
     public function testLocal()
     {
         $testing = new TestCase();
+
         if ($testing->isLocal()) {
-            echo 'local' . PHP_EOL;
+            $this->assertTrue(true);
         } else {
-            echo gethostname() . PHP_EOL;
+            $this->assertFalse(false);
         }
     }
 }

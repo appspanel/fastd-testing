@@ -11,7 +11,7 @@ namespace FastD\Testing;
 
 
 use FastD\Http\ServerRequest;
-use PHPUnit_Extensions_Database_TestCase;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Psr\Http\Message\ResponseInterface;
 use FastD\Http\JsonResponse;
 
@@ -19,7 +19,7 @@ use FastD\Http\JsonResponse;
  * Class TestCase
  * @package FastD\Testing
  */
-abstract class WebTestCase extends PHPUnit_Extensions_Database_TestCase
+abstract class WebTestCase extends PHPUnitTestCase
 {
     const JSON_OPTION = JSON_UNESCAPED_UNICODE;
 
@@ -29,27 +29,8 @@ abstract class WebTestCase extends PHPUnit_Extensions_Database_TestCase
     public function isLocal()
     {
         $addr = gethostbyname(gethostname());
-        return '127.0.0.1' === $addr;
-    }
 
-    /**
-     *
-     */
-    public function setUp()
-    {
-        if ($this->isLocal()) {
-            null != $this->getConnection() && parent::setUp();
-        }
-    }
-
-    /**
-     * Tear down unit
-     */
-    public function tearDown()
-    {
-        if ($this->isLocal()) {
-            null != $this->getConnection() && parent::tearDown();
-        }
+        return '127.' === substr($addr, 0, 4) || '::1' === $addr;
     }
 
     /**
