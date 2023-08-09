@@ -26,7 +26,7 @@ abstract class WebTestCase extends PHPUnitTestCase
     /**
      * @return bool
      */
-    public function isLocal()
+    public function isLocal(): bool
     {
         $addr = gethostbyname(gethostname());
 
@@ -34,16 +34,14 @@ abstract class WebTestCase extends PHPUnitTestCase
     }
 
     /**
-     * @param $method
-     * @param $path
+     * @param string $method
+     * @param string $path
      * @param array $headers
      * @return ServerRequest
      */
-    public function request($method, $path, array $headers = [])
+    public function request(string $method, string $path, array $headers = [])
     {
-        $serverRequest = new ServerRequest($method, $path, $headers);
-
-        return $serverRequest;
+        return new ServerRequest($method, $path, $headers);
     }
 
     /**
@@ -63,7 +61,7 @@ abstract class WebTestCase extends PHPUnitTestCase
      */
     public function equalsResponse(ResponseInterface $response, $assert)
     {
-        $this->assertEquals((string) $response->getBody(), $assert);
+        $this->assertEquals($assert, (string) $response->getBody());
     }
 
     /**
@@ -101,7 +99,7 @@ abstract class WebTestCase extends PHPUnitTestCase
      */
     public function equalsJson(ResponseInterface $response, array $assert)
     {
-        $this->assertEquals((string) $response->getBody(), json_encode($assert, JsonResponse::JSON_OPTIONS));
+        $this->assertEquals(json_encode($assert, JsonResponse::JSON_OPTIONS), (string) $response->getBody());
     }
 
     /**
@@ -112,11 +110,13 @@ abstract class WebTestCase extends PHPUnitTestCase
     {
         $json = (string) $response->getBody();
         $array = json_decode($json, true);
+
         if (is_string($key)) {
             $keys = [$key];
         } else {
             $keys = $key;
         }
+
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $array);
         }
@@ -138,7 +138,7 @@ abstract class WebTestCase extends PHPUnitTestCase
      */
     public function equalsStatus(ResponseInterface $response, $statusCode)
     {
-        $this->assertEquals($response->getStatusCode(), $statusCode);
+        $this->assertEquals($statusCode, $response->getStatusCode());
     }
 
     /**
